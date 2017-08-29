@@ -17,7 +17,7 @@ export default class Slider extends React.PureComponent {
     super();
     this.state = {
       images: ['Asheville-1.jpg','Asheville-2.jpg','Asheville-3.jpg','Asheville-4.jpg','Asheville-5.jpg','Asheville-6.jpg'],
-      activeIndex:1
+      activeIndex:0
     }
   }
   renderImage = () => {
@@ -56,7 +56,7 @@ previousImage = () => {
   if(activeIndex - 1 >= 0)
   {
     this.setState({
-      activeIndex: activeIndex -1,
+      activeIndex: activeIndex - 1,
     })
   }
   else
@@ -71,12 +71,16 @@ componentDidMount() {
 }
 autoSlide = () => {
   var _this = this;
-  setInterval(function(){
+  let interval = setInterval(function(){
     _this.nextImage();
-  }, 5000);
+  }, 500);
+  this.setState ({
+    stopInterval: interval
+  })
 }
 stopAutoSlide = () => {
-    clearInterval(autoSlide);
+    clearInterval(this.state.stopInterval);
+
 }
   render() {
     return (
@@ -85,6 +89,10 @@ stopAutoSlide = () => {
           <img className="slideImage" src={require('../../images/' + this.renderImage())} />
           <leftIcon className="sliderIconLeft" onClick={this.previousImage} />
           <rightIcon className="sliderIconRight" onClick={this.nextImage}/>
+        </div>
+        <div className="toggleAuto">
+        <div className="toggleButton" onClick={this.stopAutoSlide}><br />Stop slide show</div>
+        <div className="toggleButton" onClick={this.autoSlide}><br />Start slide show</div>
         </div>
       </div>
     );
